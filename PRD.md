@@ -73,3 +73,4 @@ Most online recipe platforms assume prior kitchen experience, featuring lengthy 
 - **[Architecture Document (docs/architecture.md)](./docs/architecture.md)** — Component tree, routing map, and state flow. *(Next Step)*
 - **[Testing Document (docs/testing.md)](./docs/testing.md)** — Vitest unit test cases and verification strategy. *(Next Step)*
 - **[Work Plan (tasks.md)](./tasks.md)** — Step-by-step construction tasks with "Done when" acceptance criteria.
+
