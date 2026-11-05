@@ -131,7 +131,15 @@ export const App: FC = () => {
                 />
               }
             />
-            <Route path="/shopping-list" element={<ShoppingListPage />} />
+            <Route
+              path="/shopping-list"
+              element={
+                <ShoppingListPage
+                  recipes={recipes}
+                  favoriteIds={favoriteIds}
+                />
+              }
+            />
 
             {/* 404 Fallback */}
             <Route

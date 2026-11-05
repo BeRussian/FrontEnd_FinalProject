@@ -88,3 +88,4 @@ describe('RandomRecipePage Component', () => {
     expect(screen.getByText(/loading recipes/i)).toBeInTheDocument();
   });
 });
+
