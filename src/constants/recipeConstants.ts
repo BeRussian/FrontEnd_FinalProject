@@ -7,3 +7,4 @@
  */
 export const DEFAULT_RECIPE_IMAGE =
   'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=800&auto=format&fit=crop&q=80';
+

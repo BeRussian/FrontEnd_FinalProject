@@ -21,3 +21,4 @@ describe('Application Constants & Fallbacks', () => {
     expect(DEFAULT_RECIPE_IMAGE.startsWith('https://')).toBe(true);
   });
 });
+
