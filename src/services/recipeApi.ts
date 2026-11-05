@@ -87,3 +87,4 @@ export const fetchLiveRecipes = async (): Promise<Recipe[]> => {
 
   return data.meals.map(mapMealDBToRecipe);
 };
+

@@ -1,14 +1,19 @@
-import { describe, it, expect } from 'vitest';
-import { mapMealDBToRecipe, type MealDBMeal } from './recipeApi';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { mapMealDBToRecipe, fetchLiveRecipes, type MealDBMeal } from './recipeApi';
 import { DEFAULT_RECIPE_IMAGE } from '../constants/recipeConstants';
 
 /**
- * Unit Test: TheMealDB API Adapter & Mapping Logic
+ * Unit & Integration Tests: TheMealDB API Adapter & Failure Simulations
  * 
- * Verifies that the raw schema from TheMealDB is safely and cleanly converted
- * to our strict EasyBite Recipe interface without `any` types.
+ * Demonstrates:
+ * 1. Schema mapping from raw MealDB object to Recipe interface.
+ * 2. Network failure simulations (HTTP 500, fetch rejection, null payloads).
  */
-describe('TheMealDB API Adapter (mapMealDBToRecipe)', () => {
+describe('TheMealDB API Adapter & Network Failure Simulations', () => {
+  afterEach(() => {
+    // Restore any mocked functions after each test to keep tests isolated
+    vi.restoreAllMocks();
+  });
   const sampleRawMeal: MealDBMeal = {
     idMeal: '52772',
     strMeal: 'Teriyaki Chicken Casserole',
@@ -58,4 +63,45 @@ describe('TheMealDB API Adapter (mapMealDBToRecipe)', () => {
     const recipe = mapMealDBToRecipe(sampleRawMeal);
     expect(recipe.difficulty).toBe('Level 1');
   });
+
+  // =======================================================
+  // Network Failure Simulations (How API Errors are Caught)
+  // =======================================================
+  describe('fetchLiveRecipes - Failure Scenarios & Error Propagation', () => {
+    it('should throw an informative error when network request rejects (offline simulation)', async () => {
+      // Simulation: Simulates user having no internet or DNS failing
+      vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(
+        new Error('Failed to fetch (Network connection lost)')
+      );
+
+      await expect(fetchLiveRecipes()).rejects.toThrow(
+        'Failed to fetch (Network connection lost)'
+      );
+    });
+
+    it('should throw when the API server responds with HTTP 500 error', async () => {
+      // Simulation: Simulates TheMealDB server crashing with internal 500 error
+      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
+        ok: false,
+        status: 500
+      } as Response);
+
+      await expect(fetchLiveRecipes()).rejects.toThrow(
+        'TheMealDB API returned HTTP status 500'
+      );
+    });
+
+    it('should throw when API returns empty/null meals array', async () => {
+      // Simulation: Simulates API returning empty result payload
+      vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ meals: null })
+      } as Response);
+
+      await expect(fetchLiveRecipes()).rejects.toThrow(
+        'No recipes found from TheMealDB API'
+      );
+    });
+  });
 });
+

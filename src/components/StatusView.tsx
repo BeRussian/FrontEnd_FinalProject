@@ -85,3 +85,4 @@ export const StatusView: FC<StatusViewProps> = ({ type, message, onRetry }) => {
     </div>
   );
 };
+
