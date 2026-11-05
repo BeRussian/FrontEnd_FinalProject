@@ -51,3 +51,4 @@ export const Navbar: FC = () => {
     </header>
   );
 };
+

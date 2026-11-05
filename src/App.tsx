@@ -9,40 +9,41 @@ import { ShoppingListPage } from './pages/ShoppingListPage';
 
 /**
  * App:
- * Root component configuring React Router for the EasyBite application.
+ * Root application configuring the Nested Route Master-Detail architecture.
  */
 export const App: FC = () => {
   return (
     <BrowserRouter>
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        {/* Top persistent navigation bar */}
         <Navbar />
 
-        <div style={{ flex: 1 }}>
+        {/* Dynamic page routes */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Routes>
-            {/* Master View: Recipe Catalog */}
-            <Route path="/" element={<CatalogPage />} />
+            {/* Split-View Master-Detail Route:
+                - '/' renders sidebar + default recipe detail
+                - '/recipes/:id' renders sidebar + selected recipe detail in <Outlet />
+            */}
+            <Route path="/" element={<CatalogPage />}>
+              <Route index element={<RecipeDetailPage />} />
+              <Route path="recipes/:id" element={<RecipeDetailPage />} />
+            </Route>
 
-            {/* Detail View: Individual Recipe by Dynamic ID */}
-            <Route path="/recipes/:id" element={<RecipeDetailPage />} />
-
-            {/* Extra View 1: Saved Favorites */}
+            {/* Extra Views */}
             <Route path="/favorites" element={<FavoritesPage />} />
-
-            {/* Extra View 2: Random Recipe Decision Maker */}
             <Route path="/random" element={<RandomRecipePage />} />
-
-            {/* Extra View 3: Shopping List */}
             <Route path="/shopping-list" element={<ShoppingListPage />} />
 
-            {/* Bonus: 404 Not Found fallback route */}
+            {/* 404 Not Found fallback */}
             <Route
               path="*"
               element={
-                <main style={{ padding: '2rem', textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
+                <main style={{ padding: '3rem', textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
                   <h1>404: Page Not Found</h1>
-                  <p>Oops! The recipe page you are looking for does not exist.</p>
+                  <p>The page you requested could not be found.</p>
                   <Link to="/" style={{ color: '#e65100', fontWeight: 'bold' }}>
-                    Return to Home Catalog
+                    Return to Recipe Catalog
                   </Link>
                 </main>
               }

@@ -12,3 +12,4 @@ export const ShoppingListPage: FC = () => {
     </main>
   );
 };
+

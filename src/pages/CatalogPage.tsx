@@ -1,28 +1,61 @@
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { mockRecipes } from '../data/mockRecipes';
+import { RecipeCard } from '../components/RecipeCard';
 
 /**
- * CatalogPage (Home / Master View):
- * Minimal starter view displaying the catalog heading and links to recipes.
+ * CatalogPage (Split-View Master-Detail Layout):
+ * 
+ * Layout Architecture:
+ * - Left Pane (Master): Scrollable sidebar containing RecipeCard instances.
+ * - Right Pane (Detail): Flexible main content area rendering the detailed Recipe view via <Outlet />.
  */
 export const CatalogPage: FC = () => {
   return (
-    <main style={{ padding: '1.5rem', fontFamily: 'system-ui, sans-serif' }}>
-      <h1>🍳 EasyBite: Recipe Catalog (Master View)</h1>
-      <p>Welcome to EasyBite! Level 1 cooking for beginners.</p>
+    <div style={{
+      display: 'flex',
+      height: 'calc(100vh - 65px)',
+      overflow: 'hidden',
+      fontFamily: 'system-ui, -apple-system, sans-serif'
+    }}>
+      {/* 1. Left Column: Scrollable Recipe List (Master Sidebar) */}
+      <aside style={{
+        width: '360px',
+        minWidth: '300px',
+        maxWidth: '400px',
+        backgroundColor: '#fafafa',
+        borderRight: '1px solid #e0e0e0',
+        padding: '1.25rem',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <div style={{ marginBottom: '1rem' }}>
+          <h2 style={{ margin: '0 0 0.25rem 0', fontSize: '1.15rem', color: '#1a1a1a' }}>
+            🍳 Level 1 Recipes
+          </h2>
+          <span style={{ fontSize: '0.85rem', color: '#666666' }}>
+            {mockRecipes.length} simple meals ready to cook
+          </span>
+        </div>
 
-      <h2>Sample Recipes (Click to test Master-Detail routing):</h2>
-      <ul>
-        {mockRecipes.map((recipe) => (
-          <li key={recipe.id} style={{ margin: '0.5rem 0' }}>
-            <Link to={`/recipes/${recipe.id}`} style={{ fontWeight: 'bold' }}>
-              {recipe.title}
-            </Link>{' '}
-            <span>— {recipe.prepTime} ({recipe.category})</span>
-          </li>
-        ))}
-      </ul>
-    </main>
+        {/* Scrollable list of RecipeCard component instances */}
+        <div style={{ flex: 1 }}>
+          {mockRecipes.map((recipe) => (
+            <RecipeCard key={recipe.id} recipe={recipe} />
+          ))}
+        </div>
+      </aside>
+
+      {/* 2. Right Column: Detailed View Pane (Detail Canvas) */}
+      <section style={{
+        flex: 1,
+        overflowY: 'auto',
+        padding: '2rem 2.5rem',
+        backgroundColor: '#ffffff'
+      }}>
+        <Outlet />
+      </section>
+    </div>
   );
 };
