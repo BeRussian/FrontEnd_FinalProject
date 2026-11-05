@@ -1,8 +1,10 @@
-import type { FC } from 'react';
+import { useState, useMemo, type FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import type { Recipe } from '../types/recipe';
 import { RecipeCard } from '../components/RecipeCard';
 import { StatusView } from '../components/StatusView';
+import { SearchBar } from '../components/SearchBar';
+import { filterRecipes } from '../utils/recipeUtils';
 
 interface CatalogPageProps {
   recipes: Recipe[];
@@ -16,8 +18,14 @@ interface CatalogPageProps {
  * CatalogPage (Split-View Master-Detail View):
  * 
  * Displays:
- * - Left Pane: Sidebar with loading spinner, fallback warning banner, and scrollable list of recipes.
- * - Right Pane: High-detail recipe canvas rendered via <Outlet />.
+ * - Left Pane (Master Sidebar):
+ *   - Level 1 Header
+ *   - Real-time SearchBar (searches title, ingredients & filters by category)
+ *   - Fallback warning banner (when API fails)
+ *   - Loading state indicator
+ *   - Scrollable list of RecipeCards or Empty State
+ * - Right Pane (Detail Canvas):
+ *   - High-detail recipe view rendered via <Outlet />.
  */
 export const CatalogPage: FC<CatalogPageProps> = ({
   recipes,
@@ -26,6 +34,27 @@ export const CatalogPage: FC<CatalogPageProps> = ({
   isUsingFallback,
   onRetry
 }) => {
+  // Real-time search & filter states
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  // Derive unique categories from active recipe list
+  const categories = useMemo(() => {
+    const categorySet = new Set<string>();
+    categorySet.add('All');
+    recipes.forEach((r) => {
+      if (r.category && r.category.trim()) {
+        categorySet.add(r.category.trim());
+      }
+    });
+    return Array.from(categorySet);
+  }, [recipes]);
+
+  // Real-time filtered recipe list based on query & category
+  const filteredRecipes = useMemo(() => {
+    return filterRecipes(recipes, searchQuery, selectedCategory);
+  }, [recipes, searchQuery, selectedCategory]);
+
   return (
     <div style={{
       display: 'flex',
@@ -35,9 +64,9 @@ export const CatalogPage: FC<CatalogPageProps> = ({
     }}>
       {/* 1. Left Column: Scrollable Recipe List (Master Sidebar) */}
       <aside style={{
-        width: '360px',
+        width: '380px',
         minWidth: '320px',
-        maxWidth: '420px',
+        maxWidth: '440px',
         backgroundColor: '#fafafa',
         borderRight: '1px solid #e0e0e0',
         padding: '1.25rem',
@@ -45,6 +74,7 @@ export const CatalogPage: FC<CatalogPageProps> = ({
         display: 'flex',
         flexDirection: 'column'
       }}>
+        {/* Sidebar Header */}
         <div style={{ marginBottom: '0.85rem' }}>
           <h2 style={{ margin: '0 0 0.25rem 0', fontSize: '1.2rem', color: '#1a1a1a' }}>
             🍳 Level 1 Recipes
@@ -52,9 +82,20 @@ export const CatalogPage: FC<CatalogPageProps> = ({
           <span style={{ fontSize: '0.85rem', color: '#666666' }}>
             {isLoading
               ? 'Loading live dishes...'
-              : `${recipes.length} simple recipes available`}
+              : `${recipes.length} simple meals ready to cook`}
           </span>
         </div>
+
+        {/* Real-time Search & Filter Component */}
+        <SearchBar
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          categories={categories}
+          totalCount={recipes.length}
+          filteredCount={filteredRecipes.length}
+        />
 
         {/* Fallback warning banner when API fails */}
         {isUsingFallback && (
@@ -68,11 +109,50 @@ export const CatalogPage: FC<CatalogPageProps> = ({
         {/* Loading state indicator */}
         {isLoading ? (
           <StatusView type="loading" message="Cooking up recipes from TheMealDB..." />
-        ) : (
+        ) : filteredRecipes.length > 0 ? (
           <div style={{ flex: 1 }}>
-            {recipes.map((recipe) => (
+            {filteredRecipes.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
+          </div>
+        ) : (
+          /* Empty State when search/category filter yields 0 matches */
+          <div style={{
+            textAlign: 'center',
+            padding: '2rem 1rem',
+            backgroundColor: '#ffffff',
+            borderRadius: '8px',
+            border: '1px dashed #d1d5db',
+            marginTop: '0.5rem'
+          }}>
+            <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔍</div>
+            <h3 style={{ margin: '0 0 0.4rem 0', fontSize: '1rem', color: '#1a1a1a' }}>
+              No recipes found
+            </h3>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.85rem', color: '#666666', lineHeight: 1.4 }}>
+              {searchQuery.trim()
+                ? `No meals matching "${searchQuery}"`
+                : 'No meals found in this category'}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('All');
+              }}
+              style={{
+                backgroundColor: '#e65100',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '0.45rem 0.9rem',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+            >
+              Reset filters
+            </button>
           </div>
         )}
       </aside>
