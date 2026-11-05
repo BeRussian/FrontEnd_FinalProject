@@ -1,85 +1,81 @@
-# מפרט אפליקציה: ספר מתכונים למתחילים (Level 1 Cooking)
+# App Specification: EasyBite · Level 1 Cooking for Beginners
 
-> 🍳 **חזון המוצר:**  
-> אפליקציית מתכונים פשוטה, ברורה ומעודדת, המיועדת במיוחד לאנשים שמעולם לא בישלו או למי ש"שורף סלטים". כל המתכונים הם ברמת קושי Level 1 – מרכיבים בסיסיים שיש בכל מקרר, זמני הכנה קצרים (עד 15 דקות), והסברים ברורים שלב-אחר-שלב בלי מונחים מסובכים.
-
----
-
-## 1. מבנה הנתונים: אובייקט "מתכון" (Recipe Object)
-
-כל מתכון באפליקציה הוא אובייקט מוגדר היטב ב-TypeScript עם השדות הפשוטים הבאים:
-
-| שם השדה | טיפוס (Type) | דוגמה לערך | תפקיד השדה במערכת |
-| :--- | :--- | :--- | :--- |
-| **`id`** | `string` / `number` | `"1"` או `1` | מזהה ייחודי: משמש את React Router בכתובת הדף (`/recipes/:id`) ומשמש כ-`key` ברשימות. |
-| **`title`** | `string` | `"טוסט גבינה משודרג"` | שם המנה שמוצג בכותרת הכרטיסייה ובעמוד המתכון. |
-| **`category`** | `string` | `"ארוחת בוקר"` / `"ערב מהירה"` | קטגוריה המשמשת לכפתורי הסינון בעמוד הראשי. |
-| **`image`** | `string` | `"https://.../toast.jpg"` | כתובת URL לתמונת המנה המוכנה. |
-| **`prepTime`** | `string` | `"10 דקות"` | זמן ההכנה – נותן ביטחון למשתמש שמדובר במשהו מהיר. |
-| **`difficulty`** | `string` | `"Level 1 - קל במיוחד"` | דרגת הקושי של המנה (תמיד קל). |
-| **`description`** | `string` | `"טוסט פריך וזהוב עם גבינה נמסה בלי להסתבך"` | משפט תיאור קצר ומזמין בכרטיסייה. |
-| **`ingredients`** | `string[]` (מערך מחרוזות) | `["2 פרוסות לחם", "2 פרוסות גבינה צהובה", "כף חמאה"]` | רשימת המצרכים הפשוטים להכנה. |
-| **`instructions`** | `string[]` (מערך מחרוזות) | `["מורחים חמאה על הלחם", "מניחים גבינה", "קולים במחבת 3 דקות מכל צד"]` | שלבי הכנה ממוספרים, ברורים וקצרים. |
+> 🍳 **Product Vision:**  
+> A friendly, clean, and zero-intimidation recipe application built specifically for cooking beginners and people who "burn salads".  
+> All recipes are strictly **Level 1** — basic ingredients, quick prep times (10-15 minutes), and straightforward step-by-step instructions.
 
 ---
 
-## 2. פירוט ארבעת העמודים באפליקציה
-
-האפליקציה נשענת על ניתוב באמצעות **React Router** (אפליקציית Single Page Application), עם 4 עמודים ייעודיים:
-
-### עמוד 1: קטלוג המתכונים הראשי (Home / Catalog)
-* **כתובת (Route):** `/`
-* **מה המשתמש רואה ועושה בעמוד:**
-  1. **באנר עליון מזמין:** כותרת מעודדת ("ספר מתכונים לאנשים ששורפים סלטים").
-  2. **סרגל חיפוש וסינון (SearchBar & Filters):**
-     - תיבת טקסט: סינון מיידי של המתכונים לפי שם המנה (למשל: הקלדת "ביצה" מסננת רק מנות ביצים).
-     - כפתורי קטגוריות: "הכול", "ארוחת בוקר", "ארוחת ערב מהירה", "נשנושים קלים".
-  3. **גריד כרטיסיות מתכונים (`RecipeCard`):**
-     - כל מתכון מוצג ככרטיסייה עם תמונה, כותרת, זמן הכנה ותגית קטגוריה.
-     - כפתור לב קטן (הוספה/הסרה מהמועדפים).
-     - **לחיצה על הכרטיסייה:** מנווטת בצורה חלקה לעמוד הפרטים של אותו מתכון (`/recipes/:id`).
-  4. **מצבי מערכת:**
-     - הצגת ספינר טעינה ("טוען מתכונים פשוטים...") בזמן משיכת הנתונים.
-     - הצגת הודעה ברורה במידה ולא נמצאו תוצאות בחיפוש.
+## 1. Core Guidelines & Decisions
+- **App Name:** **EasyBite**
+- **Interface Language:** English (matches TheMealDB API, avoids translation complexity, clean and unified styling).
+- **Guiding Principle:** **Keep It Simple** — clear code, strict TypeScript types, no unnecessary libraries.
+- **Data Source:** TheMealDB public API (`https://www.themealdb.com/api/json/v1/1/search.php?s=`), focused on simple categories (Breakfast, Starter, Pasta, Side).
 
 ---
 
-### עמוד 2: עמוד מתכון מורחב (Recipe Detail)
-* **כתובת (Route):** `/recipes/:id` (נתיב דינמי עם `useParams`)
-* **מה המשתמש רואה ועושה בעמוד:**
-  1. **שליפת המתכון:** העמוד קורא את ה-`id` מהכתובת ומציג את המתכון הספציפי.
-  2. **תצוגת המנה:** תמונה גדולה וברורה, שם המנה, תגית זמן הכנה ורמת קושי ("Level 1").
-  3. **רשימת מצרכים מסודרת:** תיבות ויזואליות עם רשימת המצרכים הנדרשים.
-  4. **הוראות הכנה צעד-אחר-צעד:** רשימה ממוספרת של שלבי ההכנה הפשוטים.
-  5. **פעולות:**
-     - כפתור בולט: "הוסף למתכונים השמורים שלי" (או "הסר מהשמורים" אם כבר שמור).
-     - כפתור חזרה: "← חזרה לכל המתכונים".
+## 2. Data Structure: The `Recipe` Object (TypeScript Interface)
+
+Every recipe in EasyBite is structured as a typed object:
+
+```typescript
+export interface Recipe {
+  id: string;              // Unique identifier (used in URL route: /recipes/:id)
+  title: string;           // Recipe name (e.g., "Classic Scrambled Eggs")
+  category: string;        // Category tag (e.g., "Breakfast", "Pasta", "Starter")
+  image: string;           // URL to recipe image
+  prepTime: string;        // Estimated time (e.g., "10 mins")
+  difficulty: "Level 1";   // Reassuring constant indicator
+  description: string;     // Short friendly one-liner summary
+  ingredients: string[];   // Clean list of basic ingredients
+  instructions: string[];  // Step-by-step ordered directions
+}
+```
 
 ---
 
-### עמוד 3: מתכונים שמורים (Favorites)
-* **כתובת (Route):** `/favorites`
-* **מה המשתמש רואה ועושה בעמוד:**
-  1. **רשימת המתכונים השמורים:** מציג כרטיסיות של כל המתכונים שהמשתמש סימן בלחיצה על הלב.
-  2. **שמירה קבועה בדפדפן:** המועדפים נשמרים ב-`localStorage`, כך שגם אם סוגרים ומרעננים את הדפדפן, הרשימה נשמרת.
-  3. **מצב ריק (Empty State):** במידה והמשתמש עדיין לא סימן מתכונים, מוצגת הודעה חמה ומעודדת:  
-     *"עדיין לא שמרת מתכונים! חזור לקטלוג ובחר משהו קל להכין היום."* כולל כפתור ישיר לקטלוג.
+## 3. Pages & Routing Architecture (React Router)
+
+EasyBite is a **Single Page Application (SPA)** with seamless client-side routing:
+
+### Page 1: Recipe Catalog (`/`) — Master View
+- **Header Banner:** Encouraging greeting: *"EasyBite: Cooking for people who burn salads."*
+- **Search & Filters:**
+  - Instant text search by recipe name or ingredient.
+  - Category filter pills: `All`, `Breakfast`, `Pasta`, `Starter`.
+- **Recipe Grid:**
+  - Responsive grid of `RecipeCard` components.
+  - Each card shows: image, title, prep time, category pill, and a heart button for favorites.
+  - Clicking any card navigates seamlessly to `/recipes/:id`.
+- **System States:**
+  - Clear Loading Spinner while fetching.
+  - User-friendly Error / Empty message if no recipes match.
+
+### Page 2: Recipe Detail (`/recipes/:id`) — Detail View
+- Dynamic route using `useParams()` to grab the recipe ID.
+- **Hero Display:** Large photo, recipe title, prep time, and difficulty badge ("Level 1").
+- **Ingredients Checklist:** Clean visual card listing the ingredients.
+- **Step-by-Step Instructions:** Clear, numbered guide (Step 1, Step 2...).
+- **Interactive Actions:**
+  - Favorite Button: Toggle "Save to Favorites" / "Remove from Favorites".
+  - Back Button: "← Back to Recipes" returning to Catalog.
+
+### Page 3: Saved Favorites (`/favorites`)
+- Displays all recipes favorited by the user.
+- **Persistent Storage:** Stored in `localStorage` so favorites remain intact after page reload.
+- **Empty State:** Cheerful fallback message: *"No saved recipes yet! Go back to the catalog and pick something easy to make."*
+
+### Page 4: Interactive Feature Options (Exploring Both)
+The user will evaluate both features visually:
+- **Option A: "What Should I Make?" (`/random`)**  
+  A single click button *"Feed Me Something Easy!"* that rolls an instant random Level 1 recipe and displays an interactive recommendation card with a direct link to cook it.
+- **Option B: Shopping List (`/shopping-list`)**  
+  Aggregates ingredients from favorited recipes into an interactive checklist with checkable boxes to take to the grocery store.
 
 ---
 
-### עמוד 4: "מה להכין עכשיו?" (Random Recipe / "עזרה, אני רעב")
-* **כתובת (Route):** `/random`
-* **מה המשתמש רואה ועושה בעמוד:**
-  1. **מענה למתלבטים:** מיועד למשתמש שעומד מול המקרר ולא יודע מה להכין.
-  2. **כפתור הגרלה:** כפתור בולט "תבחר לי משהו קל!".
-  3. **תצוגת המנה הנבחרת:** בלחיצה, המערכת בוחרת באופן אקראי מתכון מתוך המאגר ומציגה אותו בכרטיסייה מוגדלת ומעוצבת.
-  4. **מעבר מיידי:** כפתור "בוא נכין את זה!" המעביר בלחיצה ישירות לעמוד ההכנה המלא (`/recipes/:id`).
-
----
-
-## 3. קומפוננטות UI משותפות (מעבר לעמודים עצמם)
-כדי לעמוד בדרישת המרצה (לפחות 4 קומפוננטות עצמאיות), נבנה רכיבים לשימוש חוזר:
-1. **`Navbar` (תפריט עליון קבוע):** מופיע בראש כל העמודים, כולל לוגו וקישורי ניווט ברורים (מתכונים, מועדפים, הגרלה).
-2. **`RecipeCard` (כרטיסיית מתכון בודדת):** קומפוננטה המקבלת אובייקט מתכון ומציגה אותו ככרטיסייה (בשימוש גם בעמוד הראשי וגם בעמוד המועדפים).
-3. **`SearchBar` (שורת חיפוש וסינון):** שדה קליטת טקסט וכפתורי קטגוריות.
-4. **`StatusView` (מצבי טעינה ושגיאה):** רכיב אחראי להצגת אנימציית טעינה או הודעת שגיאה במקרה של תקלה.
+## 4. Reusable UI Components
+1. **`Navbar`:** Fixed top header with brand logo, navigation links (`Recipes`, `Favorites`, `Random`, `Shopping List`).
+2. **`RecipeCard`:** Standard card representation for a recipe (reused across Catalog and Favorites).
+3. **`SearchBar`:** Input field for text search and category buttons.
+4. **`StatusView`:** Handles loading indicator and error messaging gracefully.
