@@ -6,14 +6,21 @@ import { DEFAULT_RECIPE_IMAGE } from '../constants/recipeConstants';
 
 interface RecipeDetailPageProps {
   recipes?: Recipe[];
+  isFavorite?: (id: string) => boolean;
+  onToggleFavorite?: (id: string, title: string) => void;
 }
 
 /**
  * RecipeDetailPage (Detail View):
  * Displays full details of the active recipe on the main canvas.
  * Extracts `id` parameter from URL via `useParams()`.
+ * Includes interactive star button to toggle favorite status with instant feedback.
  */
-export const RecipeDetailPage: FC<RecipeDetailPageProps> = ({ recipes = mockRecipes }) => {
+export const RecipeDetailPage: FC<RecipeDetailPageProps> = ({
+  recipes = mockRecipes,
+  isFavorite,
+  onToggleFavorite
+}) => {
   const { id } = useParams<{ id: string }>();
 
   // If no ID is specified, default to the first available recipe
@@ -29,9 +36,11 @@ export const RecipeDetailPage: FC<RecipeDetailPageProps> = ({ recipes = mockReci
     );
   }
 
+  const isFav = isFavorite ? isFavorite(recipe.id) : false;
+
   return (
     <article style={{ maxWidth: '780px', margin: '0 auto' }}>
-      {/* Header section with image and title */}
+      {/* Header section with image, title, and favorite toggle */}
       <div style={{
         position: 'relative',
         borderRadius: '16px',
@@ -61,44 +70,83 @@ export const RecipeDetailPage: FC<RecipeDetailPageProps> = ({ recipes = mockReci
           left: 0,
           right: 0,
           background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%)',
-          padding: '2rem 1.5rem 1rem 1.5rem',
+          padding: '2rem 1.5rem 1.25rem 1.5rem',
           color: '#ffffff'
         }}>
-          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <span style={{
-              backgroundColor: '#e65100',
-              color: '#ffffff',
-              padding: '4px 10px',
-              borderRadius: '14px',
-              fontSize: '0.75rem',
-              fontWeight: 'bold',
-              textTransform: 'uppercase'
-            }}>
-              {recipe.difficulty}
-            </span>
-            <span style={{
-              backgroundColor: 'rgba(255,255,255,0.2)',
-              padding: '4px 10px',
-              borderRadius: '14px',
-              fontSize: '0.75rem',
-              fontWeight: 500
-            }}>
-              {recipe.category}
-            </span>
-            <span style={{
-              backgroundColor: 'rgba(255,255,255,0.2)',
-              padding: '4px 10px',
-              borderRadius: '14px',
-              fontSize: '0.75rem',
-              fontWeight: 500
-            }}>
-              ⏱️ {recipe.prepTime}
-            </span>
-          </div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: '1rem'
+          }}>
+            <div style={{ flex: 1 }}>
+              {/* Badges */}
+              <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+                <span style={{
+                  backgroundColor: '#e65100',
+                  color: '#ffffff',
+                  padding: '4px 10px',
+                  borderRadius: '14px',
+                  fontSize: '0.75rem',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase'
+                }}>
+                  {recipe.difficulty}
+                </span>
+                <span style={{
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  padding: '4px 10px',
+                  borderRadius: '14px',
+                  fontSize: '0.75rem',
+                  fontWeight: 500
+                }}>
+                  {recipe.category}
+                </span>
+                <span style={{
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  padding: '4px 10px',
+                  borderRadius: '14px',
+                  fontSize: '0.75rem',
+                  fontWeight: 500
+                }}>
+                  ⏱️ {recipe.prepTime}
+                </span>
+              </div>
 
-          <h1 style={{ margin: 0, fontSize: '1.85rem', fontWeight: 700 }}>
-            {recipe.title}
-          </h1>
+              <h1 style={{ margin: 0, fontSize: '1.85rem', fontWeight: 700 }}>
+                {recipe.title}
+              </h1>
+            </div>
+
+            {/* Favorite Star Button */}
+            {onToggleFavorite && (
+              <button
+                type="button"
+                onClick={() => onToggleFavorite(recipe.id, recipe.title)}
+                aria-label={isFav ? `Remove ${recipe.title} from favorites` : `Add ${recipe.title} to favorites`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  backgroundColor: isFav ? '#fef3c7' : 'rgba(255, 255, 255, 0.9)',
+                  color: isFav ? '#b45309' : '#1f2937',
+                  border: isFav ? '2px solid #f59e0b' : '2px solid transparent',
+                  borderRadius: '10px',
+                  padding: '0.55rem 0.95rem',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <span style={{ fontSize: '1.15rem', color: isFav ? '#f59e0b' : '#6b7280' }}>
+                  {isFav ? '★' : '☆'}
+                </span>
+                <span>{isFav ? 'Saved' : 'Save'}</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

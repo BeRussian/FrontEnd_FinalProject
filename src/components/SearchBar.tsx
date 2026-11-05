@@ -184,3 +184,4 @@ export const SearchBar: FC<SearchBarProps> = ({
     </div>
   );
 };
+

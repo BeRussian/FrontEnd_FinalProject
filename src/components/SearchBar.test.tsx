@@ -172,3 +172,4 @@ describe('SearchBar Component (User Interaction & Reactive UI)', () => {
     expect(handleCategoryChange).toHaveBeenCalledWith('All');
   });
 });
+

@@ -12,6 +12,8 @@ interface CatalogPageProps {
   errorMessage: string | null;
   isUsingFallback: boolean;
   onRetry: () => void;
+  isFavorite: (id: string) => boolean;
+  onToggleFavorite: (recipeId: string, recipeTitle: string) => void;
 }
 
 /**
@@ -23,7 +25,7 @@ interface CatalogPageProps {
  *   - Real-time SearchBar (searches title, ingredients & filters by category)
  *   - Fallback warning banner (when API fails)
  *   - Loading state indicator
- *   - Scrollable list of RecipeCards or Empty State
+ *   - Scrollable list of RecipeCards with interactive favorite stars or Empty State
  * - Right Pane (Detail Canvas):
  *   - High-detail recipe view rendered via <Outlet />.
  */
@@ -32,7 +34,9 @@ export const CatalogPage: FC<CatalogPageProps> = ({
   isLoading,
   errorMessage,
   isUsingFallback,
-  onRetry
+  onRetry,
+  isFavorite,
+  onToggleFavorite
 }) => {
   // Real-time search & filter states
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -112,7 +116,12 @@ export const CatalogPage: FC<CatalogPageProps> = ({
         ) : filteredRecipes.length > 0 ? (
           <div style={{ flex: 1 }}>
             {filteredRecipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                isFavorite={isFavorite(recipe.id)}
+                onToggleFavorite={onToggleFavorite}
+              />
             ))}
           </div>
         ) : (
