@@ -54,7 +54,7 @@ export const mockRecipes: Recipe[] = [
     id: '3',
     title: '15-Minute Garlic & Tomato Pasta',
     category: 'Pasta',
-    image: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281744?w=600&auto=format&fit=crop&q=80',
+    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&auto=format&fit=crop&q=80',
     prepTime: '15 mins',
     difficulty: 'Level 1',
     description: 'A comforting bowl of spaghetti tossed with garlic and rich tomato sauce.',

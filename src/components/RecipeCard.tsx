@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import type { Recipe } from '../types/recipe';
+import { DEFAULT_RECIPE_IMAGE } from '../constants/recipeConstants';
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -35,8 +36,12 @@ export const RecipeCard: FC<RecipeCardProps> = ({ recipe }) => {
     >
       {/* Thumbnail image */}
       <img
-        src={recipe.image}
+        src={recipe.image || DEFAULT_RECIPE_IMAGE}
         alt={recipe.title}
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = DEFAULT_RECIPE_IMAGE;
+        }}
         style={{
           width: '64px',
           height: '64px',
@@ -74,3 +79,4 @@ export const RecipeCard: FC<RecipeCardProps> = ({ recipe }) => {
     </NavLink>
   );
 };
+

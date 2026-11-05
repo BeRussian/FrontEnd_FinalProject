@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { mockRecipes } from '../data/mockRecipes';
+import { DEFAULT_RECIPE_IMAGE } from '../constants/recipeConstants';
 
 /**
  * RecipeDetailPage (Detail View):
@@ -37,8 +38,12 @@ export const RecipeDetailPage: FC = () => {
         backgroundColor: '#000000'
       }}>
         <img
-          src={recipe.image}
+          src={recipe.image || DEFAULT_RECIPE_IMAGE}
           alt={recipe.title}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = DEFAULT_RECIPE_IMAGE;
+          }}
           style={{
             width: '100%',
             height: '320px',
