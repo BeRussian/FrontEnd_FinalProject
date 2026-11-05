@@ -1,122 +1,57 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import type { FC } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Navbar } from './components/Navbar';
+import { CatalogPage } from './pages/CatalogPage';
+import { RecipeDetailPage } from './pages/RecipeDetailPage';
+import { FavoritesPage } from './pages/FavoritesPage';
+import { RandomRecipePage } from './pages/RandomRecipePage';
+import { ShoppingListPage } from './pages/ShoppingListPage';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+/**
+ * App:
+ * Root component configuring React Router for the EasyBite application.
+ */
+export const App: FC = () => {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <BrowserRouter>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Navbar />
 
-      <div className="ticks"></div>
+        <div style={{ flex: 1 }}>
+          <Routes>
+            {/* Master View: Recipe Catalog */}
+            <Route path="/" element={<CatalogPage />} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+            {/* Detail View: Individual Recipe by Dynamic ID */}
+            <Route path="/recipes/:id" element={<RecipeDetailPage />} />
+
+            {/* Extra View 1: Saved Favorites */}
+            <Route path="/favorites" element={<FavoritesPage />} />
+
+            {/* Extra View 2: Random Recipe Decision Maker */}
+            <Route path="/random" element={<RandomRecipePage />} />
+
+            {/* Extra View 3: Shopping List */}
+            <Route path="/shopping-list" element={<ShoppingListPage />} />
+
+            {/* Bonus: 404 Not Found fallback route */}
+            <Route
+              path="*"
+              element={
+                <main style={{ padding: '2rem', textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
+                  <h1>404: Page Not Found</h1>
+                  <p>Oops! The recipe page you are looking for does not exist.</p>
+                  <Link to="/" style={{ color: '#e65100', fontWeight: 'bold' }}>
+                    Return to Home Catalog
+                  </Link>
+                </main>
+              }
+            />
+          </Routes>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </div>
+    </BrowserRouter>
+  );
+};
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
-}
-
-export default App
+export default App;
