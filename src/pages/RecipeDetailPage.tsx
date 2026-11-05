@@ -1,21 +1,24 @@
 import type { FC } from 'react';
 import { useParams } from 'react-router-dom';
+import type { Recipe } from '../types/recipe';
 import { mockRecipes } from '../data/mockRecipes';
 import { DEFAULT_RECIPE_IMAGE } from '../constants/recipeConstants';
 
+interface RecipeDetailPageProps {
+  recipes?: Recipe[];
+}
+
 /**
  * RecipeDetailPage (Detail View):
- * Renders the full details of a selected recipe on the main pane.
- * 
- * - Extracts `id` parameter from URL via `useParams()`.
- * - Displays high-resolution image, ingredients checklist, and step-by-step instructions.
+ * Displays full details of the active recipe on the main canvas.
+ * Extracts `id` parameter from URL via `useParams()`.
  */
-export const RecipeDetailPage: FC = () => {
+export const RecipeDetailPage: FC<RecipeDetailPageProps> = ({ recipes = mockRecipes }) => {
   const { id } = useParams<{ id: string }>();
 
-  // If no ID is specified, default to the first recipe or show placeholder
-  const activeId = id || mockRecipes[0]?.id;
-  const recipe = mockRecipes.find((item) => item.id === activeId);
+  // If no ID is specified, default to the first available recipe
+  const activeId = id || recipes[0]?.id;
+  const recipe = recipes.find((item) => item.id === activeId);
 
   if (!recipe) {
     return (
