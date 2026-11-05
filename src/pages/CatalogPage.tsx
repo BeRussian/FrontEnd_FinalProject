@@ -60,24 +60,9 @@ export const CatalogPage: FC<CatalogPageProps> = ({
   }, [recipes, searchQuery, selectedCategory]);
 
   return (
-    <div style={{
-      display: 'flex',
-      height: 'calc(100vh - 65px)',
-      overflow: 'hidden',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
-    }}>
+    <div className="catalog-split-container">
       {/* 1. Left Column: Scrollable Recipe List (Master Sidebar) */}
-      <aside style={{
-        width: '380px',
-        minWidth: '320px',
-        maxWidth: '440px',
-        backgroundColor: '#fafafa',
-        borderRight: '1px solid #e0e0e0',
-        padding: '1.25rem',
-        overflowY: 'auto',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
+      <aside className="catalog-sidebar">
         {/* Sidebar Header */}
         <div style={{ marginBottom: '0.85rem' }}>
           <h2 style={{ margin: '0 0 0.25rem 0', fontSize: '1.2rem', color: '#1a1a1a' }}>
@@ -167,12 +152,7 @@ export const CatalogPage: FC<CatalogPageProps> = ({
       </aside>
 
       {/* 2. Right Column: Detailed View Pane */}
-      <section style={{
-        flex: 1,
-        overflowY: 'auto',
-        padding: '2rem 2.5rem',
-        backgroundColor: '#ffffff'
-      }}>
+      <section className="catalog-detail-pane">
         <Outlet />
       </section>
     </div>

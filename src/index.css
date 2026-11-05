@@ -29,3 +29,55 @@ body {
 a {
   color: inherit;
 }
+
+/* ========================================================
+   Responsive Split-View Master-Detail (EasyBite)
+   ======================================================== */
+.catalog-split-container {
+  display: flex;
+  height: calc(100vh - 65px);
+  overflow: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.catalog-sidebar {
+  width: 380px;
+  min-width: 320px;
+  max-width: 440px;
+  background-color: #fafafa;
+  border-right: 1px solid #e0e0e0;
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.catalog-detail-pane {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 2.5rem;
+  background-color: #ffffff;
+}
+
+/* Mobile & Small Screen (< 768px) Media Query */
+@media (max-width: 768px) {
+  .catalog-split-container {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .catalog-sidebar {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #e0e0e0;
+    max-height: 450px;
+    padding: 1rem;
+  }
+
+  .catalog-detail-pane {
+    padding: 1.5rem 1rem;
+  }
+}
