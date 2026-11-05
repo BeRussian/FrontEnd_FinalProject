@@ -121,7 +121,16 @@ export const App: FC = () => {
                 />
               }
             />
-            <Route path="/random" element={<RandomRecipePage />} />
+            <Route
+              path="/random"
+              element={
+                <RandomRecipePage
+                  recipes={recipes}
+                  isFavorite={isFavorite}
+                  onToggleFavorite={toggleFavorite}
+                />
+              }
+            />
             <Route path="/shopping-list" element={<ShoppingListPage />} />
 
             {/* 404 Fallback */}

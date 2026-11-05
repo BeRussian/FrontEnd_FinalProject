@@ -87,3 +87,4 @@ describe('useFavorites Custom Hook', () => {
     expect(saved).toEqual([]);
   });
 });
+

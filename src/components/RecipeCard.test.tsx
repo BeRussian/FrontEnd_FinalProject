@@ -82,3 +82,4 @@ describe('RecipeCard Component', () => {
     expect(handleToggle).toHaveBeenCalledWith(sampleRecipe.id, sampleRecipe.title);
   });
 });
+

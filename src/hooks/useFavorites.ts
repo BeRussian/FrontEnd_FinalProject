@@ -102,3 +102,4 @@ export const useFavorites = () => {
     dismissToast: () => setToastMessage(null)
   };
 };
+

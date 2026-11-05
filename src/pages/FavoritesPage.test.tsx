@@ -65,3 +65,4 @@ describe('FavoritesPage Component', () => {
     expect(handleClear).toHaveBeenCalledTimes(1);
   });
 });
+
