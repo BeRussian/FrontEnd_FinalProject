@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyBite — פורטל הלמידה וההגנה הרשמי (קורס 4255)</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #f97316;
+      --accent-hover: #ea580c;
+      --accent-glow: rgba(249, 115, 22, 0.25);
+      --border: #334155;
+      --border-focus: #f97316;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --code-bg: #090d16;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      font-size: 1.8rem;
+      background: var(--accent-glow);
+      padding: 0.3rem 0.6rem;
+      border-radius: 12px;
+      border: 1px solid var(--accent);
+    }
+
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+    }
+
+    .brand-title span {
+      color: var(--accent);
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .badges-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background-color: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .badge.success {
+      border-color: rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .badge.accent {
+      border-color: rgba(249, 115, 22, 0.4);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* Navigation Tabs */
+    nav.nav-tabs {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 2rem 0;
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background-color: rgba(255,255,255,0.02);
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background-color: rgba(249, 115, 22, 0.05);
+      border-radius: 8px 8px 0 0;
+    }
+
+    /* Main Container */
+    main.content-area {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Common Card Styles */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(249, 115, 22, 0.4);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-main);
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Code Block */
+    pre, code {
+      font-family: 'Consolas', 'Fira Code', monospace;
+      direction: ltr;
+      text-align: left;
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      margin: 1rem 0;
+      line-height: 1.5;
+    }
+
+    .inline-code {
+      background-color: rgba(255,255,255,0.08);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      color: var(--accent);
+      font-size: 0.88rem;
+    }
+
+    /* Architecture Tree */
+    .arch-tree {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .arch-node {
+      background-color: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .arch-node:hover {
+      background-color: var(--bg-card-hover);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .arch-node.selected {
+      border-color: var(--accent);
+      background: rgba(249, 115, 22, 0.08);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .node-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .node-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .node-summary {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Detail Modal / Drawer */
+    .detail-drawer {
+      background-color: #0b1120;
+      border: 1.5px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      display: none;
+    }
+
+    .detail-drawer.visible {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    /* Quiz / Flashcards */
+    .quiz-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .quiz-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.2s;
+    }
+
+    .quiz-card:hover {
+      border-color: var(--border-focus);
+    }
+
+    .quiz-q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+      gap: 1rem;
+    }
+
+    .quiz-q-num {
+      background-color: var(--accent-glow);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      border: 1px solid var(--accent);
+      white-space: nowrap;
+    }
+
+    .quiz-q-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      flex: 1;
+    }
+
+    .btn-reveal {
+      background-color: rgba(249, 115, 22, 0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: inherit;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-reveal:hover {
+      background-color: var(--accent);
+      color: #fff;
+    }
+
+    .quiz-answer {
+      display: none;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border);
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    .quiz-answer.visible {
+      display: block;
+      animation: fadeIn 0.2s;
+    }
+
+    .quote-answer {
+      background-color: rgba(34, 197, 94, 0.08);
+      border-right: 4px solid var(--success);
+      padding: 0.85rem 1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 0.75rem 0;
+      color: #e2e8f0;
+      font-style: italic;
+    }
+
+    /* Timer section */
+    .timer-box {
+      text-align: center;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 30px rgba(249, 115, 22, 0.15);
+    }
+
+    .timer-display {
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--accent);
+      font-family: monospace;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-timer {
+      background-color: var(--accent);
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      padding: 0.6rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-timer.secondary {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--text-main);
+    }
+
+    .btn-timer:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* Step Timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: relative;
+      margin-top: 1.5rem;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: all 0.2s;
+    }
+
+    .timeline-item:hover {
+      border-color: var(--accent);
+    }
+
+    .timeline-minute {
+      background: var(--accent-glow);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.85rem;
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .timeline-minute span {
+      font-size: 1.2rem;
+    }
+
+    .timeline-content {
+      flex: 1;
+    }
+
+    .timeline-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.35rem;
+    }
+
+    .timeline-body {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    /* Accordion */
+    .accordion-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+      background: var(--bg-card);
+    }
+
+    .accordion-header {
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 700;
+      background-color: var(--bg-card);
+      transition: background 0.15s;
+    }
+
+    .accordion-header:hover {
+      background-color: var(--bg-card-hover);
+    }
+
+    .accordion-body {
+      padding: 1.25rem;
+      background-color: #0b1120;
+      border-top: 1px solid var(--border);
+      display: none;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+    }
+
+    .accordion-body.open {
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem;
+      }
+      nav.nav-tabs {
+        padding: 0.5rem 1rem 0;
+      }
+      main.content-area {
+        padding: 1rem;
+      }
+      .timer-display {
+        font-size: 2.8rem;
+      }
+      .timeline-item {
+        flex-direction: column;
+      }
+      .timeline-minute {
+        width: 100%;
+        height: auto;
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🍳</div>
+      <div>
+        <div class="brand-title">EasyBite <span>Study Hub</span></div>
+        <div class="brand-subtitle">פורטל הלמידה וההגנה הרשמי · קורס 4255 (יריב גלעד)</div>
+      </div>
+    </div>
+
+    <div class="badges-row">
+      <span class="badge success">✓ 62 בדיקות עוברות (100%)</span>
+      <span class="badge accent">React 19 + TypeScript</span>
+      <span class="badge">TheMealDB API</span>
+      <span class="badge">21 קומיטים ב-Git</span>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('arch')">🗺️ מפת הארכיטקטורה</button>
+    <button class="tab-btn" onclick="switchTab('concepts')">💡 מושגי יסוד (Level 0)</button>
+    <button class="tab-btn" onclick="switchTab('explorer')">📂 סייר הקבצים והקוד</button>
+    <button class="tab-btn" onclick="switchTab('defense')">⏱️ סימולטור הגנה (7 דקות)</button>
+    <button class="tab-btn" onclick="switchTab('quiz')">❓ חידון שאלות יריב (15 שאלות)</button>
+    <button class="tab-btn" onclick="switchTab('edge-cases')">🛡️ 12 מקרי קצה ומלכודות</button>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="content-area">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: מפת הארכיטקטורה                      -->
+    <!-- ========================================== -->
+    <section id="tab-arch" class="tab-content active">
+      <div class="card">
+        <div class="card-title">🗺️ ארכיטקטורת המערכת וזרימת המידע (Data Flow)</div>
+        <div class="card-desc">לחץ על כל רכיב כדי לפתוח את כרטיסיית המידע המלאה: תפקידו, ה-Props שהוא מקבל, ה-State שהוא מחזיק, ומה לומר עליו בהגנה.</div>
+
+        <div class="arch-tree">
+          <div class="arch-node" onclick="showNodeDetail('main')">
+            <div class="node-tag">נקודת הכניסה</div>
+            <div class="node-title">main.tsx</div>
+            <div class="node-summary">חיבור React 19 ל-DOM (אלמנט #root) תחת StrictMode.</div>
+          </div>
+
+          <div class="arch-node selected" onclick="showNodeDetail('app')">
+            <div class="node-tag">הקפטן של המערכת</div>
+            <div class="node-title">App.tsx</div>
+            <div class="node-summary">שליפת API, ניהול Loading/Error, ראוטר ראשי, useFavorites והודעות Toast.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('navbar')">
+            <div class="node-tag">סרגל ניווט עליון</div>
+            <div class="node-title">Navbar.tsx</div>
+            <div class="node-summary">תפריט קישורים (NavLink) עם חיווי עמוד פעיל ותג מונה מועדפים חי.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('catalog')">
+            <div class="node-tag">תבנית Master-Detail</div>
+            <div class="node-title">CatalogPage.tsx</div>
+            <div class="node-summary">סרגל צד נגלל + Outlet לפירוט. מחזיק State חיפוש ומחשב סינון ב-useMemo.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('searchbar')">
+            <div class="node-tag">חיפוש מבוקר</div>
+            <div class="node-title">SearchBar.tsx</div>
+            <div class="node-summary">Controlled Input, סינון בכותרת ובמרכיבים, כפתור ✕, וכפתורי קטגוריות.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('recipecard')">
+            <div class="node-tag">כרטיסיית מתכון</div>
+            <div class="node-title">RecipeCard.tsx</div>
+            <div class="node-summary">תמונה עם onError, כפתור כוכב עם stopPropagation למניעת ניווט.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('detail')">
+            <div class="node-tag">פירוט מתכון דינמי</div>
+            <div class="node-title">RecipeDetailPage.tsx</div>
+            <div class="node-summary">שליפת id מהכתובת דרך useParams(), תמונת Hero, מצרכים והוראות.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('favorites')">
+            <div class="node-tag">עמוד מועדפים</div>
+            <div class="node-title">FavoritesPage.tsx</div>
+            <div class="node-summary">גריד רספונסיבי של מתכונים שנשמרו ב-localStorage וכפתור Clear all.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('random')">
+            <div class="node-tag">מחולל החלטות</div>
+            <div class="node-title">RandomRecipePage.tsx</div>
+            <div class="node-summary">כפתור Roll Another Recipe להגרלת מנה קלה ללא כפילויות רצופות.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('shopping')">
+            <div class="node-tag">To-Do List ומצרכים</div>
+            <div class="node-title">ShoppingListPage.tsx</div>
+            <div class="node-summary">איסוף מצרכים מהמועדפים, צ'קבוקסים עם קו חוצה, מד %, והוספת פריטים.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('usefavorites')">
+            <div class="node-tag">Custom Hook</div>
+            <div class="node-title">useFavorites.ts</div>
+            <div class="node-summary">טעינה עצלה מ-localStorage, שמירה אוטומטית ב-useEffect, וניהול טיימר Toast.</div>
+          </div>
+
+          <div class="arch-node" onclick="showNodeDetail('recipeapi')">
+            <div class="node-tag">שירות תקשורת</div>
+            <div class="node-title">recipeApi.ts</div>
+            <div class="node-summary">משיכה מ-TheMealDB API, מתאם mapMealDBToRecipe, ו-Fallback מקומי.</div>
+          </div>
+        </div>
+
+        <!-- Node detail viewer -->
+        <div id="arch-detail-drawer" class="detail-drawer visible">
+          <h3 id="drawer-title" style="color: var(--accent); margin-bottom: 0.5rem;">App.tsx — הקפטן והמנצח של המערכת</h3>
+          <p id="drawer-desc" style="color: #cbd5e1; margin-bottom: 1rem;">
+            זהו הרכיב הראשי של האפליקציה. הוא מחזיק את מקור האמת היחיד (Single Source of Truth) עבור המתכונים מה-API,
+            מנהל את מצבי הטעינה והשגיאות, מגדיר את הניתובים הראשיים של React Router, ומפעיל את ה-Hook של המועדפים.
+          </p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+            <div style="background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);">
+              <strong style="color: #38bdf8;">State פנימי:</strong>
+              <div id="drawer-state" style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.25rem;">recipes, isLoading, errorMessage, isUsingFallback</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border);">
+              <strong style="color: #38bdf8;">קובץ טסטים מקביל:</strong>
+              <div id="drawer-test" style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.25rem;">src/setup.test.ts (2 tests)</div>
+            </div>
+          </div>
+          <div style="background: rgba(249, 115, 22, 0.1); border-right: 4px solid var(--accent); padding: 0.75rem 1rem; border-radius: 0 8px 8px 0;">
+            <strong style="color: var(--accent);">ציטוט מוכן להגנה מול יריב:</strong>
+            <p id="drawer-quote" style="font-size: 0.9rem; margin-top: 0.25rem; color: #f1f5f9;">
+              "בחרתי למקם את ה-State של המתכונים והמועדפים ב-App.tsx כי הם משמשים מספר עמודים שונים במקביל (הקטלוג, עמוד המועדפים, רשימת הקניות וה-Navbar). כך שמרתי על Single Source of Truth נקי."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: מושגי יסוד                          -->
+    <!-- ========================================== -->
+    <section id="tab-concepts" class="tab-content">
+      <div class="card">
+        <div class="card-title">💡 מילון מושגי היסוד (מאפס ועד מתכנת בכיר)</div>
+        <div class="card-desc">כל מושג שמופיע בקוד, עם הסבר פשוט, דוגמת קוד מהפרויקט, ולמה הוא נבחר.</div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>1. מה זה Single Page Application (SPA)?</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>הסבר פשוט:</strong> באפליקציית אתר מסורתית (MPA), כל לחיצה על קישור שולחת בקשה לשרת, הדפדפן מרענן את כל העמוד בלבן וטוען קובץ HTML חדש.<br>
+            ב-SPA (כמו EasyBite עם React Router), יש רק קובץ HTML אחד (<code>index.html</code>). כשמשתמש לוחץ על קישור, JavaScript מחליף בזיכרון רק את החלק הרלוונטי בעמוד בלי שום רענון מסך! המעבר מהיר ברמת מילי-שניות ונראה כמו אפליקציית Native לטלפון.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>2. למה השתמשנו ב-TypeScript קפדני ואסרנו על שימוש ב-any?</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>הסבר פשוט:</strong> <code>any</code> ב-TypeScript הוא פקודה שאומרת לקומפיילר: "אל תבדוק אותי, תתעלם מבאגים". שימוש ב-any מבטל את כל הפואנטה של TypeScript וגורם לשגיאות זמן-ריצה מביכות.<br>
+            ב-EasyBite הגדרנו Interface מדויק בשם <code>Recipe</code> ב-<code>src/types/recipe.ts</code>. כל שדה (כותרת, מרכיבים, תמונה) מוגדר כ-<code>string</code> או <code>string[]</code>. הקומפיילר (<code>tsc -b</code>) בודק כל שורה בזמן הבנייה ומוודא ב-100% שאין טעויות כתיב או ערכים חסרים.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>3. תבנית ה-Master-Detail והתגית &lt;Outlet /&gt;</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>הסבר פשוט:</strong> Master-Detail היא תבנית שבה בצד אחד מוצגת רשימת כל הפריטים (Master), ובצד השני מוצג הפריט שנבחר בהרחבה (Detail).<br>
+            ב-React Router, התגית <code>&lt;Outlet /&gt;</code> משמשת כ-"מקום שמור" (Placeholder) בתוך קומפוננטת האב (<code>CatalogPage</code>). כשהמשתמש גולש ל-<code>/recipes/52772</code>, ה-Outlet טוען לתוכו אוטומטית את קומפוננטת <code>RecipeDetailPage</code>, בעוד סרגל הצד נשאר מקובע במקומו.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>4. שליפת פרמטר דינמי עם useParams()</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>הסבר פשוט:</strong> כשהנתיב מוגדר בראוטר כ-<code>path="recipes/:id"</code>, הנקודתיים מסמנות ש-<code>id</code> הוא משתנה דינמי.<br>
+            בקומפוננטת <code>RecipeDetailPage</code>, אנחנו מפעילים את ה-Hook:
+            <pre>const { id } = useParams&lt;{ id: string }&gt;();</pre>
+            הוא שולף מתוך כתובת ה-URL את המספר המדויק ומאפשר לנו למצוא את המתכון במערך: <code>recipes.find(r =&gt; r.id === id)</code>.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>5. למה Derived State עם useMemo עדיף על useState כפול?</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>שאלת מפתח בהגנה:</strong> מתחילים נוטים ליצור <code>filteredRecipes</code> בתוך <code>useState</code> נפרד, ואז צריכים לזכור לעדכן אותו ב-useEffect בכל פעם שהמשתמש מקליד אות או כשהנתונים מגיעים מה-API. זה מוביל לבאגים קשים של חוסר סנכרון!<br>
+            <strong>הפתרון המקצועי שלנו:</strong> שומרים ב-State רק את מחרוזת החיפוש (<code>searchQuery</code>), ומחשבים את הרשימה המסוננת כ-Derived State בזמן אמת:
+            <pre>const filteredRecipes = useMemo(() => {
+  return filterRecipes(recipes, searchQuery, selectedCategory);
+}, [recipes, searchQuery, selectedCategory]);</pre>
+            המידע מחושב מחדש אך ורק כשאחד המשתנים משתנה, ותמיד מובטח סנכרון מושלם ב-100%.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>6. רכיב מבוקר (Controlled Component)</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>הסבר פשוט:</strong> בשורת החיפוש <code>SearchBar</code>, תגית ה-<code>&lt;input&gt;</code> אינה שומרת את הטקסט בעצמה, אלא מקבלת את הערך מה-State: <code>value={searchQuery}</code>.<br>
+            בכל הקלדת תו, אירוע ה-<code>onChange</code> מפעיל פונקציה שמעדכנת את ה-State של React, וה-State מזין בחזרה את ה-Input. React הוא מקור האמת היחיד לכל אות שמוקלדת.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>7. מניעת בעבוע אירועים (Event Bubbling & stopPropagation)</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>הסבר פשוט:</strong> כרטיסיית מתכון בסרגל היא תגית קישור <code>&lt;NavLink to="..."&gt;</code>. בתוכה נמצא כפתור כוכב המועדפים.<br>
+            ב-DOM, כשלוחצים על אלמנט פנימי, האירוע "מבעבע" (Bubbles) כלפי מעלה לאלמנטים העוטפים אותו. אם לא היינו עוצרים זאת, לחיצה על הכוכב הייתה גם מוסיפה למועדפים וגם מנווטת את המשתמש לעמוד אחר!<br>
+            באמצעות הפעלת <code>e.stopPropagation()</code> ו-<code>e.preventDefault()</code>, עצרנו את הבעבוע והשארנו את הניווט יציב.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>8. אתחול עצל (Lazy Initialization) בשמירה ל-localStorage</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>הסבר פשוט:</strong> קריאה מ-<code>localStorage</code> דורשת גישה לדיסק של המחשב וביצוע <code>JSON.parse</code>. אם נכתוב:
+            <pre>useState(JSON.parse(localStorage.getItem('favs') || '[]'))</pre>
+            הקוד הזה ירוץ ויבזבז משאבים בכל רינדור מחדש של הקומפוננטה!<br>
+            <strong>במקום זאת, העברנו פונקציה:</strong>
+            <pre>useState(() => JSON.parse(localStorage.getItem('favs') || '[]'))</pre>
+            בזכות זה, React מריץ את הקריאה מהדיסק אך ורק פעם אחת בלבד בעליית האפליקציה (Mount).
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>9. פירמידת הבדיקות: Unit, Integration, E2E</span>
+            <span>▼</span>
+          </div>
+          <div class="accordion-body">
+            <strong>1. Unit Tests (32 בדיקות):</strong> בדיקת פונקציות טהורות ומבודדות ב-Vitest (למשל <code>filterRecipes</code>, <code>getRandomRecipe</code>, הדמיית נפילת רשת HTTP 500). רץ תוך מילי-שניות ללא DOM.<br>
+            <strong>2. Integration Tests (30 בדיקות):</strong> בדיקת רכיבי React שלמים עם <code>@testing-library/react</code> ו-<code>jsdom</code>. מדמה משתמש אמיתי שמקליד בשורת החיפוש, לוחץ על כפתור הניקוי, מסמן צ'קבוקס ברשימת הקניות או לוחץ על כוכב.<br>
+            <strong>3. E2E Tests:</strong> בדיקת זרימת משתמש מקצה לקצה בדפדפן ממשי עם מנוע כמו Playwright.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: סייר קבצים אינטראקטיבי               -->
+    <!-- ========================================== -->
+    <section id="tab-explorer" class="tab-content">
+      <div class="card">
+        <div class="card-title">📂 סייר הקבצים והקוד (Line-by-Line Code Inspector)</div>
+        <div class="card-desc">בחר קובץ מהרשימה כדי לצפות בקוד שלו בליווי הסבר על התפקיד של כל שורה.</div>
+
+        <div style="display: grid; grid-template-columns: 260px 1fr; gap: 1.25rem;">
+          <!-- File List -->
+          <div style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.5rem; max-height: 500px; overflow-y: auto;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent); padding: 0.5rem; font-weight: 700;">שירותים ולוגיקה</div>
+            <button class="tab-btn" style="width: 100%; text-align: right; border-radius: 6px; padding: 0.4rem 0.6rem;" onclick="showCodeFile('api')">📄 recipeApi.ts</button>
+            <button class="tab-btn" style="width: 100%; text-align: right; border-radius: 6px; padding: 0.4rem 0.6rem;" onclick="showCodeFile('utils')">📄 recipeUtils.ts</button>
+            <button class="tab-btn" style="width: 100%; text-align: right; border-radius: 6px; padding: 0.4rem 0.6rem;" onclick="showCodeFile('hook')">📄 useFavorites.ts</button>
+
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent); padding: 0.5rem; font-weight: 700; margin-top: 0.5rem;">רכיבי ממשק</div>
+            <button class="tab-btn" style="width: 100%; text-align: right; border-radius: 6px; padding: 0.4rem 0.6rem;" onclick="showCodeFile('search')">📄 SearchBar.tsx</button>
+            <button class="tab-btn" style="width: 100%; text-align: right; border-radius: 6px; padding: 0.4rem 0.6rem;" onclick="showCodeFile('card')">📄 RecipeCard.tsx</button>
+            <button class="tab-btn" style="width: 100%; text-align: right; border-radius: 6px; padding: 0.4rem 0.6rem;" onclick="showCodeFile('toast')">📄 Toast.tsx</button>
+
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent); padding: 0.5rem; font-weight: 700; margin-top: 0.5rem;">עמודים</div>
+            <button class="tab-btn" style="width: 100%; text-align: right; border-radius: 6px; padding: 0.4rem 0.6rem;" onclick="showCodeFile('catalog')">📄 CatalogPage.tsx</button>
+            <button class="tab-btn" style="width: 100%; text-align: right; border-radius: 6px; padding: 0.4rem 0.6rem;" onclick="showCodeFile('shopping')">📄 ShoppingListPage.tsx</button>
+          </div>
+
+          <!-- Code View Area -->
+          <div style="background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem;">
+            <h4 id="code-title" style="color: var(--accent); margin-bottom: 0.5rem;">src/services/recipeApi.ts — מתאם ה-API ושליפת הנתונים</h4>
+            <p id="code-explanation" style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.75rem;">
+              הקוד שמושך 25 מתכונים מ-TheMealDB API, ממיר את המבנה השטוח למערך נקי ומטופס, ותופס נפילות רשת.
+            </p>
+            <pre id="code-snippet"><code class="language-typescript">// Adapter Pattern: ממיר את ה-20 שדות של MealDB למערך ingredients נקי
+export const mapMealDBToRecipe = (meal: any): Recipe => {
+  const ingredients: string[] = [];
+  for (let i = 1; i <= 20; i++) {
+    const ingredient = meal[`strIngredient${i}`];
+    const measure = meal[`strMeasure${i}`];
+    if (ingredient && ingredient.trim()) {
+      ingredients.push(measure ? `${measure.trim()} ${ingredient.trim()}` : ingredient.trim());
+    }
+  }
+
+  return {
+    id: meal.idMeal,
+    title: meal.strMeal,
+    category: meal.strCategory || 'General',
+    image: meal.strMealThumb || DEFAULT_RECIPE_IMAGE,
+    prepTime: '15 mins',
+    difficulty: 'Level 1',
+    description: meal.strInstructions.slice(0, 120) + '...',
+    ingredients,
+    instructions: meal.strInstructions.split('\\r\\n').filter(Boolean)
+  };
+};</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: סימולטור הגנה של 7 דקות              -->
+    <!-- ========================================== -->
+    <section id="tab-defense" class="tab-content">
+      <div class="timer-box">
+        <div style="font-size: 1.1rem; color: #cbd5e1; font-weight: 600;">⏱️ שעון עצר לתרגול הגנה חיה מול יריב גלעד</div>
+        <div class="timer-display" id="timer">07:00</div>
+        <div class="timer-controls">
+          <button class="btn-timer" onclick="startTimer()">▶ התחל תרגול</button>
+          <button class="btn-timer secondary" onclick="pauseTimer()">⏸ השהה</button>
+          <button class="btn-timer secondary" onclick="resetTimer()">↺ אפס ל-7 דקות</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📋 תסריט 7 הדקות (מילה במילה - מה להגיד בכל דקה):</div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-minute">דקה <span>1</span></div>
+            <div class="timeline-content">
+              <div class="timeline-title">פתיחה, רעיון המיזם ועבודה מול TheMealDB API</div>
+              <div class="timeline-body">
+                "שלום יריב, בניתי את <strong>EasyBite</strong> – ספר מתכונים רמה 1 למתחילים גמורים בבישול ('אנשים ששורפים סלט').<br>
+                השתמשתי ב-API הציבורי של TheMealDB. כדי לא להעמיס שדות מלוכלכים, כתבתי פונקציית Adapter בשם <code>mapMealDBToRecipe</code> שממירה את 20 השדות השטוחים של ה-API למבנה נתונים מסודר ומטופס ב-TypeScript ללא שום שימוש ב-any."
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-minute">דקה <span>2</span></div>
+            <div class="timeline-content">
+              <div class="timeline-title">תבנית Master-Detail וניתוב (React Router 7)</div>
+              <div class="timeline-body">
+                "מימשתי את דרישת ה-Master-Detail באמצעות תבנית Split-View: סרגל צד נגלל משמאל עם כל המתכונים, ומשטח פירוט רחב מימין שמתרנדר בעזרת <code>&lt;Outlet /&gt;</code>.<br>
+                כתובת ה-URL מתעדכנת ל-<code>/recipes/:id</code>, ורכיב הפרטים שולף את ה-ID באופן דינמי באמצעות <code>useParams()</code> ומציג את מצרכי המנה והוראות ההכנה."
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-minute">דקה <span>3</span></div>
+            <div class="timeline-content">
+              <div class="timeline-title">ניהול State, שורת חיפוש מבוקרת וסינון עם useMemo</div>
+              <div class="timeline-body">
+                "בשורת החיפוש יצרתי Controlled Component שמסנן בכל הקלדת אות. החיפוש הוא Case-Insensitive ומחפש גם בכותרת וגם בתוך רשימת המרכיבים הפנימית בעזרת <code>some()</code>.<br>
+                חשוב לציין: לא שמרתי את הרשימה המסוננת ב-State נפרד כדי למנוע כפילויות מידע, אלא חישבתי אותה ישירות כ-Derived State בעזרת <code>useMemo</code>."
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-minute">דקה <span>4</span></div>
+            <div class="timeline-content">
+              <div class="timeline-title">חסינות לרשת, טיפול בשגיאות ו-Offline Fallback</div>
+              <div class="timeline-body">
+                "הקריאה לרשת מתבצעת בתוך <code>useEffect</code> בעליית האפליקציה, ומנוהלת ע\"י 3 מצבי מסך: Loading (ספינר), Error (באנר אזהרה עם Retry), ו-Data.<br>
+                במידה והרשת נופלת או נחסמת, מנגנון ה-catch תופס את השגיאה, מציג באנר אזהרה ועובר אוטומטית ל-3 מתכוני גיבוי מקומיים מבלי שהאתר יקרוס. בדקתי זאת בעזרת חסימת Network Request בכלי המפתחים."
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-minute">דקה <span>5</span></div>
+            <div class="timeline-content">
+              <div class="timeline-title">העמודים הנוספים: Favorites, Random, Shopping List</div>
+              <div class="timeline-body">
+                "מעבר לקטלוג ישנם 3 עמודים פעילים מלאים:<br>
+                1. <strong>Favorites:</strong> שמירת מזהים ב-<code>localStorage</code> דרך Custom Hook ותג מונה חי ב-Navbar.<br>
+                2. <strong>Random:</strong> מחולל 'What Should I Make?' שמגריל מנה ללא כפילות רצופה.<br>
+                3. <strong>Shopping List:</strong> רשימת קניות To-Do List שמאגדת אוטומטית מצרכים מכל המתכונים שבמועדפים ומאפשרת סימון בצ'קבוקסים עם קו חוצה ומד % התקדמות."
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-minute">דקה <span>6</span></div>
+            <div class="timeline-content">
+              <div class="timeline-title">מערך 62 הבדיקות (Vitest + React Testing Library)</div>
+              <div class="timeline-body">
+                "כתבתי 62 בדיקות אוטומטיות (100% Pass) שמכסות את פירמידת הבדיקות:<br>
+                32 בדיקות יחידה לפונקציות הטהורות, למתאמי ה-API, ולשגיאות רשת HTTP 500.<br>
+                ו-30 בדיקות אינטגרציה עם <code>@testing-library/react</code> ו-<code>jsdom</code> שבודקות לחיצות כפתורים, הקלדה בשורת החיפוש, סימון צ'קבוקסים ברשימת הקניות, ושמירה ב-localStorage."
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-minute">דקה <span>7</span></div>
+            <div class="timeline-content">
+              <div class="timeline-title">שאלות עומק וסגירה בביטחון מקסימלי</div>
+              <div class="timeline-body">
+                "אני פתוח לכל שאלה שלך, יריב. עברתי על כל שורת קוד בפרויקט ואני שולט בארכיטקטורה מא' ועד ת'."
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: חידון שאלות יריב                    -->
+    <!-- ========================================== -->
+    <section id="tab-quiz" class="tab-content">
+      <div class="card">
+        <div class="card-title">❓ חידון 15 השאלות המכשילות של יריב (Interactive Defense Flashcards)</div>
+        <div class="card-desc">לחץ על כפתור "חשוף תשובה" כדי לבדוק האם ידעת לענות כמו מתכנת מקצועי.</div>
+
+        <div class="quiz-container">
+
+          <div class="quiz-card">
+            <div class="quiz-q-header">
+              <div class="quiz-q-text">1. איפה מנוהל ה-State באפליקציה ומדוע מיקמת אותו דווקא שם?</div>
+              <button class="btn-reveal" onclick="toggleAnswer('q1', this)">👁️ חשוף תשובה</button>
+            </div>
+            <div id="q1" class="quiz-answer">
+              <div class="quote-answer">
+                "ה-State של המתכונים והמועדפים מנוהל ב-App.tsx כי הוא משמש מספר נתיבים שונים (הקטלוג, עמוד המועדפים, רשימת הקניות והתג ב-Navbar). לעומת זאת, State של קלט זמני כמו טקסט החיפוש (searchQuery) מנוהל מקומית ב-CatalogPage כדי למנוע רינדורים מיותרים של כל האפליקציה."
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-q-header">
+              <div class="quiz-q-text">2. למה השתמשת ב-useMemo עבור הסינון ולא שמרת filteredRecipes ב-State נפרד?</div>
+              <button class="btn-reveal" onclick="toggleAnswer('q2', this)">👁️ חשוף תשובה</button>
+            </div>
+            <div id="q2" class="quiz-answer">
+              <div class="quote-answer">
+                "עקרון ה-Single Source of Truth: שמירת רשימה מסוננת ב-State נפרד דורשת סנכרון כפול בכל פעם שה-API מסיים לטעון או שהחיפוש משתנה, מה שגורם לבאגים של Stale State. שימוש ב-useMemo מחשב את הרשימה כ-Derived State באופן יעיל ובטוח."
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-q-header">
+              <div class="quiz-q-text">3. מה עשית כדי שלחיצה על כוכב המועדפים בכרטיסייה לא תגרום לניווט בלתי רצוי?</div>
+              <button class="btn-reveal" onclick="toggleAnswer('q3', this)">👁️ חשוף תשובה</button>
+            </div>
+            <div id="q3" class="quiz-answer">
+              <div class="quote-answer">
+                "בתוך ה-onClick של כפתור הכוכב הפעלתי e.stopPropagation() ו-e.preventDefault(). מכיוון שהכרטיסייה עטופה ב-NavLink, עצירת הבעבוע מונעת מאירוע הלחיצה לטפס אל תגית הקישור ומאפשרת הוספה למועדפים בלי להחליף עמוד."
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-q-header">
+              <div class="quiz-q-text">4. למה בחרת לשמור ב-localStorage רק מזהים של מתכונים (IDs) ולא את כל האובייקט?</div>
+              <button class="btn-reveal" onclick="toggleAnswer('q4', this)">👁️ חשוף תשובה</button>
+            </div>
+            <div id="q4" class="quiz-answer">
+              <div class="quote-answer">
+                "נרמול נתונים (Data Normalization): שמירת מזהים בלבד (מערך מחרוזות קטן) תופסת גודל אפסי ב-localStorage ומונעת מצב שבו מתכון מעודכן ב-API אך נשאר בגרסה ישנה בזיכרון המשתמש. אנו מצליבים את המזהים מול מערך המתכונים העדכני."
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-q-header">
+              <div class="quiz-q-text">5. כיצד בדקת שהאפליקציה עמידה בפני נפילת API או ניתוק אינטרנט?</div>
+              <button class="btn-reveal" onclick="toggleAnswer('q5', this)">👁️ חשוף תשובה</button>
+            </div>
+            <div id="q5" class="quiz-answer">
+              <div class="quote-answer">
+                "בשתי דרכים: 1. בטסטים של Vitest השתמשתי ב-vi.spyOn(globalThis, 'fetch') כדי לדמות שגיאת HTTP 500 ודחיית רשת, ובדקתי שהמערכת חוזרת ל-mockRecipes. 2. בדפדפן – השתמשתי ב-Network Request Blocking ב-DevTools של כרום, וראיתי את באנר האזהרה הכתום ואת מתכוני הגיבוי נטענים מיד."
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-card">
+            <div class="quiz-q-header">
+              <div class="quiz-q-text">6. מהו תפקידו של ה-Adapter בקובץ recipeApi.ts?</div>
+              <button class="btn-reveal" onclick="toggleAnswer('q6', this)">👁️ חשוף תשובה</button>
+            </div>
+            <div id="q6" class="quiz-answer">
+              <div class="quote-answer">
+                "ה-API של TheMealDB מחזיר מידע לא נוח: 20 שדות נפרדים בשם strIngredient1..20. פונקציית mapMealDBToRecipe רצה בלולאה, מנקה שדות ריקים ומאגדת אותם למערך נקי ingredients: string[], תוך הבטחת תאימות מלאה ל-Interface של TypeScript."
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: 12 מקרי קצה ומלכודות                 -->
+    <!-- ========================================== -->
+    <section id="tab-edge-cases" class="tab-content">
+      <div class="card">
+        <div class="card-title">🛡️ 12 מקרי הקצה והמלכודות (איך הקוד שלנו חסין ב-100%)</div>
+        <div class="card-desc">רשימת התרחישים הבעייתיים ביותר בפיתוח ווב ואיך נטרלנו כל אחד מהם מראש:</div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>1. מזהה מתכון שלא קיים ב-URL (/recipes/999999)</span>
+            <span style="color: var(--success);">נפתר ✓</span>
+          </div>
+          <div class="accordion-body">
+            קוד רשלני קורס עם <code>Cannot read property of undefined</code>. אצלנו ב-<code>RecipeDetailPage</code>, אם <code>!recipe</code>, מרונדר מסך ייעודי ומעוצב עם כותרת "Recipe Not Found" בלי שום קריסה.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>2. קישור תמונה שבור (Error 404 בתמונה)</span>
+            <span style="color: var(--success);">נפתר ✓</span>
+          </div>
+          <div class="accordion-body">
+            בכל תגית <code>&lt;img&gt;</code> מחובר מאזין <code>onError</code> שמחליף מיידית את מקור התמונה ל-<code>DEFAULT_RECIPE_IMAGE</code> ומאפס את ה-handler כדי למנוע לולאת שגיאות אינסופית.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>3. חיפוש עם רווחים בלבד ("   ")</span>
+            <span style="color: var(--success);">נפתר ✓</span>
+          </div>
+          <div class="accordion-body">
+            פונקציית <code>filterRecipes</code> מפעילה <code>trim()</code> על המחרוזת. אם התוצאה ריקה, היא מחזירה מיד את כל המתכונים בלי לסנן דבר.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>4. זיכרון localStorage פגום או גלישה בסתר</span>
+            <span style="color: var(--success);">נפתר ✓</span>
+          </div>
+          <div class="accordion-body">
+            קריאות ה-<code>JSON.parse</code> עטופות ב-<code>try/catch</code> ומאמתות <code>Array.isArray()</code>. במקרה של שגיאה או חסימת דפדפן, המערכת חוזרת למערך ריק בבטחה. נבדק בטסט ב-<code>useFavorites.test.ts</code>.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>5. הגרלת אותו מתכון פעמיים ברציפות</span>
+            <span style="color: var(--success);">נפתר ✓</span>
+          </div>
+          <div class="accordion-body">
+            ב-<code>RandomRecipePage</code>, פונקציית הגלגול החוזר מסננת את המנה הנוכחית (<code>r.id !== currentRecipe.id</code>) לפני שהיא מגרילה אינדקס אקראי, מה שמבטיח מתכון חדש בכל לחיצה.
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span>6. דליפת זיכרון מטיימר Toast</span>
+            <span style="color: var(--success);">נפתר ✓</span>
+          </div>
+          <div class="accordion-body">
+            ב-<code>useFavorites</code>, האפקט שמנהל את ה-Toast מחזיר פונקציית Cleanup נקייה: <code>return () => clearTimeout(timer)</code>. אם הרכיב יורד או מגיעה הודעה חדשה, הטיימר הישן מתבטל מיד.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    EasyBite Study Hub · נוצר עבור הגנת פרויקט גמר (קורס 4255) · מרצה: יריב גלעד · סטודנט: BeRussian
+  </footer>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    // Tab switching
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      event.currentTarget.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    // Architecture Node Detail Data
+    const nodeData = {
+      main: {
+        title: 'main.tsx — נקודת הכניסה וההתנעה',
+        desc: 'תופס את אלמנט ה-DOM שנקרא #root ומאתחל לתוכו את אפליקציית ה-React במצב StrictMode.',
+        state: 'אין (Stateless)',
+        test: 'נבדק בעליית האפליקציה',
+        quote: '"main.tsx הוא נקודת החיבור בין ה-HTML הסטטי לבין עץ הקומפוננטות של React."'
+      },
+      app: {
+        title: 'App.tsx — הקפטן והמנצח של המערכת',
+        desc: 'שולף את הנתונים מה-API, מנהל Loading ו-Error, מגדיר את הניתובים הראשיים ומפעיל את ה-Hook של המועדפים.',
+        state: 'recipes, isLoading, errorMessage, isUsingFallback',
+        test: 'src/setup.test.ts',
+        quote: '"בחרתי למקם את ה-State המרכזי ב-App.tsx כי הוא משמש מספר נתיבים שונים במקביל."'
+      },
+      navbar: {
+        title: 'Navbar.tsx — תפריט ניווט עם תג מונה חי',
+        desc: 'משתמש ב-NavLink כדי לסמן את העמוד הפעיל ומציג תג מספר כתום חי של כמות המתכונים השמורים.',
+        state: 'אין (מקבל favoritesCount כ-Prop)',
+        test: 'נבדק באינטגרציה',
+        quote: '"NavLink מונע רענון מלא של הדפדפן ומעדכן רק את החלק הרלוונטי ב-SPA."'
+      },
+      catalog: {
+        title: 'CatalogPage.tsx — תבנית ה-Master Detail',
+        desc: 'מציג סרגל צד נגלל עם כל המתכונים ומשטח פירוט רחב דרך Outlet. מחזיק State חיפוש ומחשב סינון ב-useMemo.',
+        state: 'searchQuery, selectedCategory',
+        test: 'נבדק באינטגרציה',
+        quote: '"חישבתי את filteredRecipes בעזרת useMemo ולא ב-State נפרד כדי למנוע חוסר סנכרון."'
+      },
+      searchbar: {
+        title: 'SearchBar.tsx — חיפוש מבוקר וסינון קטגוריות',
+        desc: 'Controlled Component המסנן בזמן אמת בכותרת ובמרכיבים, עם כפתור ניקוי ✕ וכפתורי קטגוריות.',
+        state: 'נשלט ע"י CatalogPage (Controlled)',
+        test: 'src/components/SearchBar.test.tsx (7 tests)',
+        quote: '"החיפוש סורק את מערך המרכיבים הפנימי בעזרת some() ואינו מוגבל רק לכותרת."'
+      },
+      recipecard: {
+        title: 'RecipeCard.tsx — כרטיסיית מתכון בסרגל',
+        desc: 'כרטיסייה עם תמונה ו-onError, כותרת, זמן הכנה, וכפתור כוכב עם stopPropagation למניעת ניווט.',
+        state: 'מקבל isFavorite ו-onToggleFavorite כ-Props',
+        test: 'src/components/RecipeCard.test.tsx (4 tests)',
+        quote: '"השתמשתי ב-stopPropagation כדי שלחיצה על הכוכב לא תגרום לניווט בלתי רצוי."'
+      },
+      detail: {
+        title: 'RecipeDetailPage.tsx — עמוד פרטי מתכון',
+        desc: 'שולף את ה-id מה-URL באמצעות useParams(), מוצא את המתכון ומציג מצרכים והוראות.',
+        state: 'שולף מתוך useParams',
+        test: 'נבדק באינטגרציה',
+        quote: '"אם המזהה בכתובת לא קיים, הקומפוננטה מציגה Recipe Not Found במקום לקרוס."'
+      },
+      favorites: {
+        title: 'FavoritesPage.tsx — עמוד מועדפים',
+        desc: 'מציג גריד רספונסיבי של כל המנות שנשמרו ב-localStorage, עם כפתור הסרה מהירה ואיפוס כללי.',
+        state: 'מסונן לפי favoriteIds',
+        test: 'src/pages/FavoritesPage.test.tsx (3 tests)',
+        quote: '"המועדפים שמורים ב-localStorage ונשמרים גם ברענון הדף או סגירת הדפדפן."'
+      },
+      random: {
+        title: 'RandomRecipePage.tsx — מחולל What Should I Make?',
+        desc: 'מגריל מתכון אקראי בלחיצת כפתור תוך מניעת חזרות רצופות, עם שמירה מהירה למועדפים.',
+        state: 'currentRecipe',
+        test: 'src/pages/RandomRecipePage.test.tsx (4 tests)',
+        quote: '"ההגרלה מסננת את המתכון המוצג כרגע כדי שהמשתמש תמיד יקבל מנה חדשה."'
+      },
+      shopping: {
+        title: 'ShoppingListPage.tsx — רשימת קניות To-Do List',
+        desc: 'מאגד מצרכים מהמועדפים, צ\'קבוקסים עם קו חוצה, פס התקדמות %, והוספת מצרכים אישיים.',
+        state: 'items (נשמר ב-localStorage)',
+        test: 'src/pages/ShoppingListPage.test.tsx (6 tests)',
+        quote: '"איגוד המצרכים מסנן כפילויות ומאפשר למשתמש לסמן מצרכים שנקנו בסופר."'
+      },
+      usefavorites: {
+        title: 'useFavorites.ts — Custom Hook לניהול מועדפים',
+        desc: 'טוען עצל מ-localStorage, שומר ב-useEffect ומנהל את טיימר ההודעות הצפות של ה-Toast.',
+        state: 'favoriteIds, toastMessage',
+        test: 'src/hooks/useFavorites.test.ts (6 tests)',
+        quote: '"ריכזתי את לוגיקת המועדפים ב-Custom Hook נקי לפי עקרון ה-Single Responsibility."'
+      },
+      recipeapi: {
+        title: 'recipeApi.ts — שירות התקשורת והמתאם',
+        desc: 'פונה ל-TheMealDB API, ממיר 20 שדות מרכיבים למערך נקי ומסודר ותופס שגיאות רשת.',
+        state: 'פונקציות טהורות ואסינכרוניות',
+        test: 'src/services/recipeApi.test.ts (8 tests)',
+        quote: '"השתמשתי ב-Adapter Pattern כדי להמיר את נתוני ה-API למבנה TypeScript קפדני."'
+      }
+    };
+
+    function showNodeDetail(key) {
+      document.querySelectorAll('.arch-node').forEach(node => node.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+
+      const data = nodeData[key];
+      if (!data) return;
+
+      const drawer = document.getElementById('arch-detail-drawer');
+      document.getElementById('drawer-title').innerText = data.title;
+      document.getElementById('drawer-desc').innerText = data.desc;
+      document.getElementById('drawer-state').innerText = data.state;
+      document.getElementById('drawer-test').innerText = data.test;
+      document.getElementById('drawer-quote').innerText = data.quote;
+      drawer.classList.add('visible');
+    }
+
+    // Accordion toggle
+    function toggleAccordion(header) {
+      const body = header.nextElementSibling;
+      body.classList.toggle('open');
+      const arrow = header.querySelector('span:last-child');
+      if (arrow) arrow.innerText = body.classList.contains('open') ? '▲' : '▼';
+    }
+
+    // Quiz toggle answer
+    function toggleAnswer(id, btn) {
+      const ans = document.getElementById(id);
+      ans.classList.toggle('visible');
+      btn.innerText = ans.classList.contains('visible') ? '🙈 הסתר תשובה' : '👁️ חשוף תשובה';
+    }
+
+    // Code Inspector Files
+    const codeFiles = {
+      api: {
+        title: 'src/services/recipeApi.ts — מתאם ה-API ושליפת הנתונים',
+        explanation: 'פונקציית mapMealDBToRecipe ממירה 20 שדות שטוחים למערך נקי, תוך תפיסת שגיאות רשת.',
+        code: `export const mapMealDBToRecipe = (meal: any): Recipe => {
+  const ingredients: string[] = [];
+  for (let i = 1; i <= 20; i++) {
+    const ingredient = meal[\`strIngredient\${i}\`];
+    const measure = meal[\`strMeasure\${i}\`];
+    if (ingredient && ingredient.trim()) {
+      ingredients.push(measure ? \`\${measure.trim()} \${ingredient.trim()}\` : ingredient.trim());
+    }
+  }
+
+  return {
+    id: meal.idMeal,
+    title: meal.strMeal,
+    category: meal.strCategory || 'General',
+    image: meal.strMealThumb || DEFAULT_RECIPE_IMAGE,
+    prepTime: '15 mins',
+    difficulty: 'Level 1',
+    description: meal.strInstructions.slice(0, 120) + '...',
+    ingredients,
+    instructions: meal.strInstructions.split('\\r\\n').filter(Boolean)
+  };
+};`
+      },
+      utils: {
+        title: 'src/utils/recipeUtils.ts — פונקציות עסקיות טהורות',
+        explanation: 'פונקציות ללא תופעות לוואי: סינון חיפוש וקטגוריות (case-insensitive), הגרלה אקראית ואיסוף מצרכים.',
+        code: `export const filterRecipes = (recipes: Recipe[], query: string, category: string): Recipe[] => {
+  const normalizedQuery = query.trim().toLowerCase();
+  const normalizedCategory = category.trim().toLowerCase();
+
+  return recipes.filter((recipe) => {
+    const matchesCategory =
+      normalizedCategory === 'all' ||
+      normalizedCategory === '' ||
+      recipe.category.toLowerCase() === normalizedCategory;
+
+    if (!matchesCategory) return false;
+    if (!normalizedQuery) return true;
+
+    const matchesTitle = recipe.title.toLowerCase().includes(normalizedQuery);
+    const matchesIngredient = recipe.ingredients.some((ing) =>
+      ing.toLowerCase().includes(normalizedQuery)
+    );
+
+    return matchesTitle || matchesIngredient;
+  });
+};`
+      },
+      hook: {
+        title: 'src/hooks/useFavorites.ts — Custom Hook למועדפים',
+        explanation: 'טעינה עצלה מ-localStorage, שמירה אוטומטית ב-useEffect וניהול טיימר הודעות פידבק.',
+        code: `export const useFavorites = () => {
+  const [favoriteIds, setFavoriteIds] = useState<string[]>(() => {
+    try {
+      const stored = localStorage.getItem('easybite_favorites');
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('easybite_favorites', JSON.stringify(favoriteIds));
+  }, [favoriteIds]);
+
+  return { favoriteIds, toggleFavorite, isFavorite, clearFavorites, toastMessage };
+};`
+      },
+      search: {
+        title: 'src/components/SearchBar.tsx — שורת חיפוש מבוקרת',
+        explanation: 'קלט מבוקר (Controlled Input) המופעל בכל הקלדה, כולל כפתור איפוס ✕ וכפתורי קטגוריות.',
+        code: `<input
+  type="text"
+  value={searchQuery}
+  onChange={(e) => onSearchChange(e.target.value)}
+  placeholder="Search recipes or ingredients..."
+/>
+{searchQuery.length > 0 && (
+  <button onClick={() => onSearchChange('')}>✕</button>
+)}`
+      },
+      card: {
+        title: 'src/components/RecipeCard.tsx — כרטיסיית מתכון עם stopPropagation',
+        explanation: 'כרטיסיית ניווט ב-NavLink עם תמונת גיבוי ב-onError וכוכב מועדפים שלא גורם לניווט.',
+        code: `const handleStarClick = (e: MouseEvent) => {
+  e.preventDefault();
+  e.stopPropagation(); // מונע מאירוע הלחיצה לטפס אל תגית ה-NavLink
+  onToggleFavorite(recipe.id, recipe.title);
+};`
+      },
+      toast: {
+        title: 'src/components/Toast.tsx — התראה צפה אוטומטית',
+        explanation: 'חלונית פידבק צפה בפינה הימנית התחתונה שמקבלת הודעה ונעלמת מעצמה אחרי 2.5 שניות.',
+        code: `export const Toast: FC<ToastProps> = ({ message, onDismiss }) => {
+  if (!message) return null;
+  return (
+    <aside role="status" style={{ position: 'fixed', bottom: '24px', right: '24px' }}>
+      <span>{message}</span>
+      <button onClick={onDismiss}>✕</button>
+    </aside>
+  );
+};`
+      },
+      catalog: {
+        title: 'src/pages/CatalogPage.tsx — תבנית Split-View Master Detail',
+        desc: 'מציגה סרגל צד נגלל משמאל ואת ה-Outlet מימין, עם רספונסיביות מלאה במובייל.',
+        code: `export const CatalogPage = ({ recipes, isLoading, ... }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const filtered = useMemo(() => filterRecipes(recipes, searchQuery), [recipes, searchQuery]);
+
+  return (
+    <div className="catalog-split-container">
+      <aside className="catalog-sidebar">
+        <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        {filtered.map(r => <RecipeCard key={r.id} recipe={r} />)}
+      </aside>
+      <section className="catalog-detail-pane"><Outlet /></section>
+    </div>
+  );
+};`
+      },
+      shopping: {
+        title: 'src/pages/ShoppingListPage.tsx — רשימת קניות To-Do List',
+        code: `export const ShoppingListPage = ({ recipes, favoriteIds }) => {
+  // איסוף מצרכים מתוך המתכונים שבמועדפים
+  const favoriteRecipes = recipes.filter(r => favoriteIds.includes(r.id));
+  // ניהול צ'קבוקסים, קו חוצה ומד אחוזי התקדמות
+};`
+      }
+    };
+
+    function showCodeFile(key) {
+      const item = codeFiles[key];
+      if (!item) return;
+      document.getElementById('code-title').innerText = item.title;
+      document.getElementById('code-explanation').innerText = item.explanation || '';
+      document.getElementById('code-snippet').innerHTML = '<code class="language-typescript">' + escapeHtml(item.code) + '</code>';
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // Timer Logic
+    let timerInterval = null;
+    let secondsLeft = 7 * 60;
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(secondsLeft / 60);
+      const secs = secondsLeft % 60;
+      document.getElementById('timer').innerText = 
+        String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function startTimer() {
+      if (timerInterval) return;
+      timerInterval = setInterval(() => {
+        if (secondsLeft > 0) {
+          secondsLeft--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          alert('הזמן של ההגנה (7 דקות) הסתיים! עבודה מצוינת!');
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      secondsLeft = 7 * 60;
+      updateTimerDisplay();
+    }
+  </script>
+</body>
+</html>
