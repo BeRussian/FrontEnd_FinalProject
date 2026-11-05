@@ -14,11 +14,11 @@
 
 ---
 
-### משימה 2: מודל הנתונים וקובץ נתוני דמה (TypeScript & Mock Data)
+### [x] משימה 2: מודל הנתונים וקובץ נתוני דמה (TypeScript & Mock Data) - הושלמה בהצלחה
 - **מה עושים:**
   1. יצירת ממשק `Recipe` מוקפד ונקי ב-`src/types/recipe.ts` (ללא שום `any`).
   2. יצירת קובץ נתוני דמה `src/data/mockRecipes.ts` עם 3 מתכונים בסיסיים ברמת Level 1.
-- **Done when:** קבצי ה-types וה-mock מוגדרים, עומדים בכללי TypeScript, ופקודת `npm run build` עוברת חלק.
+- **Done when:** קבצי ה-types וה-mock מוגדרים, עומדים בכללי TypeScript, ופקודת `npm run build` עוברת חלק. ✓ (עובר 5 בדיקות יחידה ב-323ms)
 
 ---
 

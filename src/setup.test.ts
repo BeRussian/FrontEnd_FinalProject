@@ -27,3 +27,4 @@ describe('Vitest Test Runner Environment', () => {
     expect(totalTime).toBe(15);
   });
 });
+
